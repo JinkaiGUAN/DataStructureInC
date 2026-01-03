@@ -5,13 +5,15 @@
 
 #include "arraylist_api.h"
 #include "linkedlist_api.h"
+#include "doublelinkedlist_api.h"
 
 int main()
 {
     // infra TRY/CATCH/EXEC/THROW_IF 使用示例（TRY { } CATCH { } 形式）
     TRY {
         //EXEC(ArrayList_ArrayListTest());
-        EXEC(LinkedList_Test());
+        //EXEC(LinkedList_Test());
+        EXEC(DoubleLinkedList_Test());
         return 0;
     } CATCH {
         LOG(LOG_LEVEL_ERROR, INFRA_ERR(), "caught error, handling...");
