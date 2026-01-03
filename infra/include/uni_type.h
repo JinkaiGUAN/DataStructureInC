@@ -19,6 +19,14 @@ extern "C" {
     #define TRUE  (1)
     #define FALSE (0)
 
+#ifdef __cplusplus
+#define UNITYPE_EXTERN_C_BEG  extern "C" {
+    #define UNITYPE_EXTERN_C_END    }
+#else
+#define UNITYPE_EXTERN_C_BEG
+#define UNITYPE_EXTERN_C_END
+#endif
+
 #ifdef _cplusplus
 };
 #endif

@@ -19,7 +19,8 @@ extern "C" {
     X(ERR_NULL_POINTER,      ERR_BASE(0))        \
     X(ERR_PARAMETER_WRONG,   ERR_BASE(1))        \
     X(ERR_MALLOC_FAILED,     ERR_BASE(2))        \
-    X(ERR_EMPTY_LIST,        ERR_BASE(3))
+    X(ERR_EMPTY_LIST,        ERR_BASE(3))        \
+    X(ERR_TEST_FAILED,       ERR_BASE(4))
 
 /* 错误码枚举（保持现有值不变） */
 typedef enum ErrCode {
