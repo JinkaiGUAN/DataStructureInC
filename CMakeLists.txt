@@ -18,10 +18,14 @@ target_link_libraries(DataStructureInC PRIVATE infra)
 add_subdirectory(lineartable)
 target_link_libraries(DataStructureInC PRIVATE lineartable)
 
+add_subdirectory(threadpool)
+target_link_libraries(DataStructureInC PRIVATE threadpool)
+
 # 显式为可执行目标添加包含目录，确保 IDE 与编译器均能找到头文件
 target_include_directories(DataStructureInC PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/lineartable/include
         ${CMAKE_CURRENT_SOURCE_DIR}/infra/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/threadpool/include
 )
 
 # 启用并集成 CTest 测试
