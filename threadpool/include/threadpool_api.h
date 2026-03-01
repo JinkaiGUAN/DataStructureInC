@@ -5,6 +5,7 @@
 #include <pthread.h>
 
 #include "uni_type.h"
+#include "err_code.h"
 
 #ifndef DATASTRUCTUREINC_THREADPOOL_H
 #define DATASTRUCTUREINC_THREADPOOL_H
@@ -22,6 +23,7 @@ typedef struct _Task {
 // 线程池定义
 typedef struct _ThreadPool {
     Task *taskQueue;        // 任务队列（链表头节点）
+    Task *taskQueueTail;    // 任务队列（链表尾节点）
     U32 threadNum;          // 工作线程数量
     BOOL isRunning;         // 线程池状态， TRUE 表示运行， FALSE 表示停止。
     pthread_t* threads;     // 工作线程ID数组
@@ -52,6 +54,12 @@ U32 threadPoolSubmit(ThreadPool* threadPool, taskFuncT func, void *arg);
  * @return 见 err_code.h 定义， 成功返回0.
  */
 U32 threadPoolDestroy(ThreadPool* threadPool);
+
+/**
+ * 线程池测试函数
+ * @return 见 err_code.h 定义， 成功返回0.
+ */
+U32 threadPoolTest();
 
 
 #endif //DATASTRUCTUREINC_THREADPOOL_H
