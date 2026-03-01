@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug DataStructureInC",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/DataStructureInC",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
+        },
+        {
+            "name": "Debug Tests",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/tests/DataStructureInC_Tests",
+            "args": [
+                "--gtest_filter=*"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
+        },
+        {
+            "name": "Debug DataStructureInC",
+            "type": "lldb",
+            "miDebuggerPath": "/usr/bin/lldb",  // 添加这行
+            "program": "${workspaceFolder}/build/DataStructureInC"
+        }
+    ]
+}

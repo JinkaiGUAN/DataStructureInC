@@ -1,0 +1,85 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Configure",
+            "type": "shell",
+            "command": "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "CMake: Build",
+            "type": "shell",
+            "command": "cmake --build build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "dependsOn": [
+                "CMake: Configure"
+            ]
+        },
+        {
+            "label": "CMake: Clean",
+            "type": "shell",
+            "command": "rm -rf build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Run Main Program",
+            "type": "shell",
+            "command": "./build/DataStructureInC",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "CMake: Build"
+            ]
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "./build/tests/DataStructureInC_Tests",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "dependsOn": [
+                "CMake: Build"
+            ]
+        },
+        {
+            "label": "Run Tests with Filter",
+            "type": "shell",
+            "command": "./build/tests/DataStructureInC_Tests --gtest_filter=*",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "dependsOn": [
+                "CMake: Build"
+            ]
+        }
+    ]
+}

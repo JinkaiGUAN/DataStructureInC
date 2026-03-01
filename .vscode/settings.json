@@ -1,0 +1,15 @@
+{
+    "C_Cpp.default.configurationProvider": "clangd",
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.errorSquiggles": "disabled",
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--compile-commands-dir=${workspaceFolder}/build"
+    ],
+    "lldb.launch.expressions": "simple",
+    "lldb.diagnostics.workspace": "on",
+    "lldb.displayFormat": "auto"
+}

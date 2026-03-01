@@ -10,14 +10,12 @@
 
 int main()
 {
-    fprintf(stderr, "Starting DataStructureInC...\n");
     // infra TRY/CATCH/EXEC/THROW_IF 使用示例（TRY { } CATCH { } 形式）
     TRY {
         //EXEC(ArrayList_ArrayListTest());
         //EXEC(LinkedList_Test());
         //EXEC(DoubleLinkedList_Test());
         EXEC(threadPoolTest());
-        fprintf(stderr, "DataStructureInC completed successfully\n");
         return 0;
     } CATCH {
         LOG(LOG_LEVEL_ERROR, INFRA_ERR(), "caught error, handling...");
