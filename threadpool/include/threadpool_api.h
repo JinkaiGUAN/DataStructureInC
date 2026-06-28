@@ -55,11 +55,4 @@ U32 threadPoolSubmit(ThreadPool* threadPool, taskFuncT func, void *arg);
  */
 U32 threadPoolDestroy(ThreadPool* threadPool);
 
-/**
- * 线程池测试函数
- * @return 见 err_code.h 定义， 成功返回0.
- */
-U32 threadPoolTest();
-
-
 #endif //DATASTRUCTUREINC_THREADPOOL_H

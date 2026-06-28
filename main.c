@@ -15,7 +15,6 @@ int main()
         //EXEC(ArrayList_ArrayListTest());
         //EXEC(LinkedList_Test());
         //EXEC(DoubleLinkedList_Test());
-        EXEC(threadPoolTest());
         return 0;
     } CATCH {
         LOG(LOG_LEVEL_ERROR, INFRA_ERR(), "caught error, handling...");
