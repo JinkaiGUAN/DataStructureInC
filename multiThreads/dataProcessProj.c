@@ -11,6 +11,7 @@
 #define SENSOR_QUEUE_SIZE       64
 #define PROCESS_QUEUE_SIZE      32
 #define RESULT_QUEUE_SIZE       16
+#define WATCHDOG_TIMEOUT        5
 
 typedef enum {
     SENSOR_TEMP,
@@ -125,7 +126,7 @@ int sensorQueuePop(SensorQueue *q, SensorData *data) {
 }
 
 
-nt processQueueInit(ProcessQueue *q) {
+int processQueueInit(ProcessQueue *q) {
     q->head = 0;
     q->tail = 0;
     q->count = 0;
@@ -317,6 +318,7 @@ void *sensorThread(void *arg) {
             case SENSOR_HUMIDITY: usleep(100000); break;
             case SENSOR_PRESSURE: usleep(200000); break;
             case SENSOR_ACCEL: usleep(50000); break;
+            default: usleep(100000); break;
         }
 
     }
@@ -370,6 +372,8 @@ void *computeThread(void *arg) {
                 if (sensorCount % 3 == 0) result.accelX = processData.filteredValue;
                 else if (sensorCount % 3 == 1) result.accelY = processData.filteredValue;
                 else result.accelZ = processData.filteredValue;
+                break;
+            default:
                 break;
         }
 
@@ -445,6 +449,47 @@ void *storageThread(void *arg) {
     return NULL;
 }
 
+void *watchdogThread(void *arg) {
+    time_t now;
+    int i;
+
+    while (1) {
+        now = time(NULL);
+
+        pthread_mutex_lock(&g_wdStatus.mutex);
+
+        for (i = 0; i < SENSOR_MAX; i++) {
+            if (now - g_wdStatus.lastHeartbeat[i] > WATCHDOG_TIMEOUT) {
+                printf("看门狗: 传感器%d超时!\n", i);
+                g_wdStatus.sensorAlive[i] = 0;
+                restartSensor(i);
+            }
+        }
+
+        if (now - g_wdStatus.lastHeartbeat[SENSOR_MAX] > WATCHDOG_TIMEOUT) {
+            printf("看门狗: 预处理线程超时!\n");
+            restartProcessThread();
+        }
+
+        if (now - g_wdStatus.lastHeartbeat[SENSOR_MAX + 1] > WATCHDOG_TIMEOUT) {
+            printf("看门狗: 计算线程超时!\n");
+            restartComputeThread();
+        }
+
+        for (i = 0; i < 3; i++) {
+            if (now - g_wdStatus.lastHeartbeat[SENSOR_MAX + 2 + i] > WATCHDOG_TIMEOUT) {
+                printf("看门狗: 通信线程%d超时!\n", i);
+                restartCommThread(i);
+            }
+        }
+
+        pthread_mutex_unlock(&g_wdStatus.mutex);
+
+        sleep(1);
+    }
+    return NULL;
+}
+
 int main() {
     pthread_t sensorTids[SENSOR_MAX];
     pthread_t preprocessTid, computeTid;
@@ -472,7 +517,7 @@ int main() {
     pthread_create(&networkTid, NULL, networkThread, NULL);
     pthread_create(&storageTid, NULL, storageThread, NULL);
 
-    pthread_create(&watchdogTid, NULL, g_watchdogThread, NULL);
+    pthread_create(&watchdogTid, NULL, watchdogThread, NULL);
     pthread_create(&timerTid, NULL, timerThread, NULL);
 
     for (int i = 0; i < SENSOR_MAX; i++) {
